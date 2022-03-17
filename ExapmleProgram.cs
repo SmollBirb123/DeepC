@@ -1,9 +1,9 @@
 ﻿using System;
 using DeepC;
 
-namespace Program
+namespace ExampleProgram
 {
-    class Program
+    class ExapmleProgram
     {
         static void Main(string[] args)
         {

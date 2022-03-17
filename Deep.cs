@@ -2,7 +2,7 @@
 using System.Linq;
 
 
-namespace DeepC
+namespace Deep
 {
     /// <summary>
     /// A neural network capable of deep learning.
