@@ -31,6 +31,12 @@ namespace Deep
             /// </summary>
             /// <param name="b">The bias of the created node.</param>
             public Node(double b = 0) => this.b = b;
+            /// <summary>
+            /// The sigmoid activation function.
+            /// </summary>
+            /// <param name="x">The number to be activated.</param>
+            /// <returns>One divided by one plus <see cref="Math.E"/> raised to the power of negative <paramref name="x"/>.</returns>
+            public static double Sigmoid(double x) => 1 / (1 + Math.Exp(-x));
         }
         /// <summary>
         /// A 2d representation of the <see cref="Node"/>s in the network.
@@ -66,7 +72,7 @@ namespace Deep
         public double[] FireAll(float[] inputs)
         {
             foreach (int y in Enumerable.Range(0, web[0].Length))
-                web[0][y].a = Calculus.Sig(inputs[y] + web[0][y].b);
+                web[0][y].a = Node.Sigmoid(inputs[y] + web[0][y].b);
 
             foreach (int x in Enumerable.Range(0, web.Length))
             {
@@ -76,7 +82,7 @@ namespace Deep
                     web[x][y].a = web[x][y].b;
                     foreach (int _y in Enumerable.Range(0, web[x - 1].Length))
                         web[x][y].a += web[x - 1][_y].a * web[x][y].w[_y];
-                    web[x][y].a = Calculus.Sig(web[x][y].a);
+                    web[x][y].a = Node.Sigmoid(web[x][y].a);
                 }
             }
             double[] o = new double[web[web.Length - 1].Length];
@@ -86,31 +92,18 @@ namespace Deep
 
             return o;
         }
+
+        public void SetBias(int layer, int index, double bias) => web[layer][index].b = bias;
     }
 
     /// <summary>
-    /// A collection of complex math functions.
+    /// A collection of static matrix manipulation methods.
     /// </summary>
-    public static class Calculus
+    public static class Matrix
     {
-        /// <summary>
-        /// The sigmoid activation function.
-        /// </summary>
-        /// <param name="x">The number to be activated.</param>
-        /// <returns>One divided by one plus <see cref="Math.E"/> raised to the power of negative <paramref name="x"/>.</returns>
-        public static double Sig(double x) => 1 / (1 + Math.Exp(-x));
-
-        /// <summary>
-        /// Multiplies <paramref name="a"/> by <paramref name="b"/>.
-        /// </summary>
-        /// <returns>The matrix product of <paramref name="a"/> and <paramref name="b"/>.</returns>
-        public static double MatrixMult(double[] a, double[] b)
+        public static double DotProduct(double[][] x, double[][] y)
         {
-            double sum = 0;
-            foreach (double x in a)
-                foreach (double y in b)
-                    sum += y * x;
-            return sum;
+            return 0;
         }
     }
 }
