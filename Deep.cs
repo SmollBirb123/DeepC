@@ -95,15 +95,67 @@ namespace Deep
 
         public void SetBias(int layer, int index, double bias) => web[layer][index].b = bias;
     }
-
     /// <summary>
-    /// A collection of static matrix manipulation methods.
+    /// Provides various matrix manipulation methods.
     /// </summary>
-    public static class Matrix
+    public static class MathX
     {
-        public static double DotProduct(double[][] x, double[][] y)
+        //0: X
+        //1: Y
+        /// <summary>
+        /// Implements dot prodct.
+        /// </summary>
+        /// <param name="a">An array to be multiplied.</param>
+        /// <param name="b">A transposed array to be multiplied.</param>
+        /// <returns>The dot product of <paramref name="a"/> and <paramref name="b"/></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public static double Dot(double[] a, double[] b)
         {
-            return 0;
+            double sum = 0;
+            if (a.Length != b.Length)
+                throw new ArgumentOutOfRangeException("a, b", "Length of a and b must be equal.");
+            for (int i = 0; i < a.Length; i++)
+                sum += a[i] * b[i];
+            return sum;
+        }
+        /// <summary>
+        /// Implements dot product with matricies.
+        /// </summary>
+        /// <param name="a">A matrix with a row to be multiplied.</param>
+        /// <param name="b">A matrix with a colum to be multiplied.</param>
+        /// <param name="x">The index of the row to be multiplied.</param>
+        /// <param name="y">the index of the colum to be multiplied.</param>
+        /// <returns>The dot product of a[x,] and b[,y].</returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public static double Dot(double[,] a, double[,] b, int x, int y)
+        {
+            double sum = 0;
+            if (a.GetLength(0) != b.GetLength(1))
+                throw new ArgumentOutOfRangeException("a, b", "Length 0 of a must be equal to length 1 of b.");
+            for (int i = 0; i < a.GetLength(0); i++)
+                sum += a[x, i] * b[i, y];
+            return sum;
+        }
+        /// <summary>
+        /// Implements matrix multiplication.
+        /// </summary>
+        /// <param name="a">A matrix to be multiplied.</param>
+        /// <param name="b">A matrix to be multiplied.</param>
+        /// <returns>The matrix product of <paramref name="a"/> and <paramref name="b"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public static double[,] Product(double[,] a, double[,] b)
+        {
+            double[,] p = new double[a.GetLength(0), b.GetLength(1)];
+            if (a.GetLength(1) != b.GetLength(0))
+                throw new ArgumentOutOfRangeException("a, b", "Length 1 of a must be equal to length 0 of b.");
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < b.GetLength(0); j++)
+                {
+                    p[i, j] = Dot(a, b, i, j);
+                }
+            }
+            return p;
         }
     }
 }
