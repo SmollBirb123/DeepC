@@ -1,5 +1,5 @@
 ﻿using System;
-using DeepC;
+using Deep;
 
 namespace ExampleProgram
 {
